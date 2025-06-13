@@ -37,7 +37,7 @@ public class StringAverageSolver
 
         foreach (var wordNumber in wordNumbers)
         {
-            if (!_numberStringToInt.TryGetValue(wordNumber, out var value))
+            if (!_numberStringToInt.TryGetValue(wordNumber.ToLower(), out var value))
             {
                 return false;
             }
