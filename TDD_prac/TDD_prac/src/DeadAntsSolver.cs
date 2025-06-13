@@ -40,7 +40,12 @@ public class DeadAntsSolver
 
             foreach (var character in scatteredBits)
             {
-                _letterCounts[character]++;
+                if (!_letterCounts.TryGetValue(character, out var value))
+                {
+                    throw new Exception("Only 'ant' characters are allowed.");
+                }
+
+                _letterCounts[character] = ++value;
             }
         }
     }

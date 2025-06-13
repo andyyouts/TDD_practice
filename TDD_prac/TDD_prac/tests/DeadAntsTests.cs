@@ -30,5 +30,12 @@ public class DeadAntsTests
     {
         _deadAntsSolver.CountDeadAnts(antsStrings).Should().Be(expectedCount);
     }
+
+    [Test]
+    public void should_throw_exception_if_contain_other_characters_than_ant()
+    {
+        var exception = Assert.Throws<Exception>(() => _deadAntsSolver.CountDeadAnts("ant...ant..nat.ant.t..satn"));
+        exception.Message.Should().Be("Only 'ant' characters are allowed.");
+    }
     
 }
