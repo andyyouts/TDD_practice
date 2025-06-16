@@ -1,4 +1,4 @@
-﻿namespace TDD_prac;
+﻿namespace TDD_prac.BandGenerator;
 
 public class BandNameGenerator
 {
