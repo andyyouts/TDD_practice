@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace TDD_prac;
+﻿namespace TDD_prac.DeadAnts;
 
 public class DeadAntsSolver
 {
