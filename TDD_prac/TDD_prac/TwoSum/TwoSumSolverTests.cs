@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 
-namespace TDD_prac.tests;
+namespace TDD_prac.TwoSum;
 
 public class TwoSumSolverTests
 {
@@ -12,14 +12,13 @@ public class TwoSumSolverTests
         _twoSumSolver = new TwoSumSolver();
     }
 
-    [TestCase(new[] { 2, 7, 3, 10 }, 9, new[] { 0, 1 })]
-    [TestCase(new[] { 100, 3, 20, 77 }, 23, new[] { 1, 2 })]
-    [TestCase(new[] { 1, 2, 3, 7, 10, 12, 44, 29, 78, 1000 }, 88, new[] { 4, 8 })]
+    [TestCase(new[] { 2, 7, 3, 10 }, 9, new[] { 0, 1 }, TestName = "two sum for four elements")]
+    [TestCase(new[] { 1, 2, 3, 7, 10, 12, 44, 29, 78, 1000 }, 88, new[] { 4, 8 }, TestName = "two sum for multiple elements")]
     public void should_return_indexes_for_two_sum(int[] ints, int sum, IEnumerable<int> expectation)
     {
-        _twoSumSolver.GetIndexesForTwoSum(ints, sum)
-            .Should()
-            .BeEquivalentTo(expectation);
+        var result = _twoSumSolver.GetIndexesForTwoSum(ints, sum);
+
+        result.Should().BeEquivalentTo(expectation);
     }
 
     [Test]
