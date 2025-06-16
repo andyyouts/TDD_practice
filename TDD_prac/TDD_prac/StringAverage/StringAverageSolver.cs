@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace TDD_prac;
+namespace TDD_prac.StringAverage;
 
 public class StringAverageSolver
 {
