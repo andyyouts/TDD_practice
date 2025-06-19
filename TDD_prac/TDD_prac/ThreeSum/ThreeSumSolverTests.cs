@@ -4,8 +4,6 @@ namespace TDD_prac.ThreeSum;
 
 public class ThreeSumSolverTests
 {
-    private ThreeSumSolver _threeSumSolver;
-
     private readonly List<List<IList<int>>> _possibleSolutions =
     [
         new()
@@ -57,6 +55,8 @@ public class ThreeSumSolverTests
         }
     ];
 
+    private ThreeSumSolver _threeSumSolver;
+
     [SetUp]
     public void SetUp()
     {
@@ -83,20 +83,11 @@ public class ThreeSumSolverTests
         threeSum.Should().BeEquivalentTo(new List<IList<int>> { new List<int> { 0, 0, 0 } });
     }
 
-    [Test]
-    public void should_return_solution_regardless_of_order_if_there_are_many()
+    [TestCase(new[] { -1, 0, 1, 2, -1, -4 }, true)]
+    [TestCase(new[] { -1, 0, 1, 2, -1, -4 }, false)]
+    public void should_return_solution_regardless_of_order_if_there_are_many(int[] ints, bool ascending)
     {
-        var threeSumByAscending = _threeSumSolver.SolveThreeSum([-1, 0, 1, 2, -1, -4]);
-        var threeSumByDescending = _threeSumSolver.SolveThreeSum([-1, 0, 1, 2, -1, -4], false);
-
-        IsValidSolution(threeSumByAscending, threeSumByDescending);
-    }
-
-    private void IsValidSolution(params IList<IList<int>>[] results)
-    {
-        foreach (var result in results)
-        {
-            _possibleSolutions.Should().ContainEquivalentOf(result);
-        }
+        var threeSum = _threeSumSolver.SolveThreeSum(ints, ascending);
+        _possibleSolutions.Should().ContainEquivalentOf(threeSum);
     }
 }
