@@ -26,9 +26,9 @@ public class StringAverageSolver
 
         var wordNumbers = numbersAsWords.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        return !TryParseAllNumbers(wordNumbers, out var sum)
-            ? "n/a"
-            : CalculateAverage(sum, wordNumbers.Length);
+        return TryParseAllNumbers(wordNumbers, out var sum)
+            ? CalculateAverage(sum, wordNumbers.Length)
+            : "n/a";
     }
 
     private bool TryParseAllNumbers(string[] wordNumbers, out int sum)
@@ -37,7 +37,7 @@ public class StringAverageSolver
 
         foreach (var wordNumber in wordNumbers)
         {
-            if (!_numberStringToInt.TryGetValue(wordNumber.ToLower(), out var value))
+            if (IsNumberValid(wordNumber, out var value))
             {
                 return false;
             }
@@ -46,6 +46,11 @@ public class StringAverageSolver
         }
 
         return true;
+    }
+
+    private bool IsNumberValid(string wordNumber, out int value)
+    {
+        return !_numberStringToInt.TryGetValue(wordNumber.ToLower(), out value);
     }
 
     private static string CalculateAverage(int sum, int count)
