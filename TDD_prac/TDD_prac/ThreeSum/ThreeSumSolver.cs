@@ -2,95 +2,65 @@
 
 public class ThreeSumSolver
 {
-    public IList<IList<int>> SolveThreeSum(int[]? ints, bool ascending = true)
+    public IList<IList<int>> SolveThreeSum(int[]? ints, bool sortingAscending = true)
     {
         ArgumentNullException.ThrowIfNull(ints);
 
-        if (ints.Length < 3)
+        if (HasEnoughElements(ints))
         {
             return new List<IList<int>>();
         }
         
-        return ascending ? SolveByDescending(ints) : SolveByAscending(ints);    
+        return sortingAscending ? SolveByDescending(ints) : SolveByAscending(ints);    
     }
 
-    private IList<IList<int>> SolveByAscending(int[] ints)
+    private static bool HasEnoughElements(int[] ints)
     {
-        var result = new List<IList<int>>();
+        return ints.Length < 3;
+    }
 
+    private static IList<IList<int>> SolveByAscending(int[] ints)
+    {
         Array.Sort(ints);
         
-        for (var i = 0; i < ints.Length - 2; i++)
-        {
-            if (i > 0 && ints[i] == ints[i - 1])
-            {
-                continue;
-            }
-
-            var left = i + 1;
-            var right = ints.Length - 1;
-
-            while (left < right)
-            {
-                var sum = ints[i] + ints[left] + ints[right];
-
-                switch (sum)
-                {
-                    case 0:
-                    {
-                        result.Add(new List<int> { ints[i], ints[left], ints[right] });
-                        while (left < right && ints[left] == ints[left + 1])
-                        {
-                            left++; 
-                        }
-
-                        while (left < right && ints[right] == ints[right - 1])
-                        {
-                            right--; 
-                        }
-
-                        left++;
-                        right--;
-                        break;
-                    }
-                    case < 0:
-                        left++;
-                        break;
-                    default:
-                        right--;
-                        break;
-                }
-            }
-        }
-
-        return result;
+        return CalculateThreeSumCombinations(ints);
     }
-    
-    private IList<IList<int>> SolveByDescending(int[] ints)
-    {
-        var result = new List<IList<int>>();
 
+    private static bool SameValueAsLastElement(int[] ints, int i)
+    {
+        return i > 0 && ints[i] == ints[i - 1];
+    }
+
+    private static IList<IList<int>> SolveByDescending(int[] ints)
+    {
         ints = ints.OrderDescending().ToArray();
         
-        for (var i = 0; i < ints.Length - 2; i++)
+        return CalculateThreeSumCombinations(ints);
+    }
+
+    private static IList<IList<int>> CalculateThreeSumCombinations(int[] ints)
+    {
+        List<IList<int>> result = [];
+
+        for (var curIndex = 0; curIndex < ints.Length - 2; curIndex++)
         {
-            if (i > 0 && ints[i] == ints[i - 1])
+            if (SameValueAsLastElement(ints, curIndex))
             {
                 continue;
             }
 
-            var left = i + 1;
+            var left = curIndex + 1;
             var right = ints.Length - 1;
 
             while (left < right)
             {
-                var sum = ints[i] + ints[left] + ints[right];
+                var sum = ints[curIndex] + ints[left] + ints[right];
 
                 switch (sum)
                 {
                     case 0:
                     {
-                        result.Add(new List<int> { ints[i], ints[left], ints[right] });
+                        result.Add(new List<int> { ints[curIndex], ints[left], ints[right] });
                         while (left < right && ints[left] == ints[left + 1])
                         {
                             left++; 
@@ -117,5 +87,4 @@ public class ThreeSumSolver
 
         return result;
     }
-
 }
