@@ -2,6 +2,8 @@
 
 public class DeadAntsSolver
 {
+    private const string ValidAntValue = "ant";
+
     private readonly Dictionary<char, int> _letterCounts = new()
     {
         { 'a', 0 },
@@ -11,7 +13,7 @@ public class DeadAntsSolver
 
     public int CountDeadAnts(string antsString)
     {
-        if (string.IsNullOrWhiteSpace(antsString))
+        if (!IsValidAntString(antsString))
         {
             return 0;
         }
@@ -23,28 +25,48 @@ public class DeadAntsSolver
         return _letterCounts.Values.Max();
     }
 
+    private static bool IsValidAntString(string antsString)
+    {
+        return !string.IsNullOrWhiteSpace(antsString);
+    }
+
     private void CountScatteredBits(string[] antBits)
     {
         foreach (var antBit in antBits)
         {
-            if (antBit == "ant")
+            if (IsCurrentPartValid(antBit))
             {
                 continue;
             }
             
-            var scatteredBits = antBit.Contains("ant")
-                ? antBit.Replace("ant", "")
-                : antBit;
+            var scatteredBits = GetScatteredBits(antBit);
 
             foreach (var character in scatteredBits)
             {
-                if (!_letterCounts.TryGetValue(character, out var value))
-                {
-                    throw new Exception("Only 'ant' characters are allowed.");
-                }
-
-                _letterCounts[character] = ++value;
+                UpdateAntCount(character);
             }
         }
+    }
+
+    private static string GetScatteredBits(string antBit)
+    {
+        return antBit.Contains(ValidAntValue)
+            ? antBit.Replace(ValidAntValue, "")
+            : antBit;
+    }
+
+    private static bool IsCurrentPartValid(string antBit)
+    {
+        return antBit == ValidAntValue;
+    }
+
+    private void UpdateAntCount(char character)
+    {
+        if (!_letterCounts.TryGetValue(character, out var value))
+        {
+            throw new Exception("Only 'ant' characters are allowed.");
+        }
+
+        _letterCounts[character] = ++value;
     }
 }
