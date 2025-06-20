@@ -2,18 +2,25 @@
 
 public class TwoSumSolver
 {
-    public int[] GetIndexesForTwoSum(int[] ints, int i)
+    private readonly Dictionary<int, int> _indexes = new();
+
+    public int[] GetIndexesForTwoSum(int[] ints, int sum)
     {
-        var indexes = new Dictionary<int, int>();
-        for (var j = 0; j < ints.Length; j++)
+        for (var curIndex = 0; curIndex < ints.Length; curIndex++)
         {
-            var complement = i - ints[j];
-            if (indexes.TryGetValue(complement, out var value))
+            var curValue = ints[curIndex];
+            var complement = sum - curValue;
+            if (IsComplementExist(complement, out var complementIndex))
             {
-                return [value, j];
+                return [complementIndex, curIndex];
             }
-            indexes[ints[j]] = j;
+            _indexes[curValue] = curIndex;
         }
         throw new ArgumentException("No two sum solution");
+    }
+
+    private bool IsComplementExist(int complement, out int value)
+    {
+        return _indexes.TryGetValue(complement, out value);
     }
 }
