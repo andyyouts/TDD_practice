@@ -4,6 +4,9 @@ namespace TDD_prac.Rot13;
 
 public static class Rot13Transformer
 {
+    private const int LowercaseFirstLetter = 'a';
+    private const int UppercaseFirstLetter = 'A';
+
     public static string Transform(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
@@ -36,11 +39,12 @@ public static class Rot13Transformer
 
     private static char Rot13(char c)
     {
-        return c switch
-        {
-            >= 'A' and <= 'Z' => (char)('A' + (c - 'A' + 13) % 26),
-            >= 'a' and <= 'z' => (char)('a' + (c - 'a' + 13) % 26),
-            _ => c
-        };
+        var firstLetter = char.IsUpper(c) ? UppercaseFirstLetter : LowercaseFirstLetter;
+        return TransformCharacter(c, firstLetter);
+    }
+
+    private static char TransformCharacter(char c, int firstLetter)
+    {
+        return (char)(firstLetter + (c - firstLetter + 13) % 26);
     }
 }
