@@ -4,7 +4,7 @@ public class DuplicatesCounter
 {
     private readonly Dictionary<char, int> _charCounter = new();
 
-    public int CountDuplicates(string input)
+    public int CountDuplicatesByForEach(string input)
     {
         var duplicateCounts = 0;
 
@@ -22,5 +22,10 @@ public class DuplicatesCounter
             }
         }
         return duplicateCounts;
+    }
+
+    public int CountDuplicatesByLinq(string input)
+    {
+        return input.GroupBy(char.ToLower).Where(g => g.Count() > 1).Select(g => g.Key).Count();
     }
 }

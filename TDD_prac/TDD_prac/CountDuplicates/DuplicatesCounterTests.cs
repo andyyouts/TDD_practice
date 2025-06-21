@@ -16,18 +16,17 @@ public class DuplicatesCounterTests
     public void should_return_zero_for_non_repeating_character_string()
     {
         var duplicates = CountDuplicates("abc");
-        duplicates.Should().Be(0);
+        DuplicatesCountShouldBe(duplicates, 0);
     }
-
 
     [TestCase("aabbcde", 2, TestName = "all lower case with adjacent duplicates")]
     [TestCase("indivisibility", 1, TestName = "all lower case with non-adjacent duplicates")]
     [TestCase("ABAB", 2, TestName = "all upper case with non-adjacent duplicates")]
     [TestCase("ABBA", 2, TestName = "all upper case with adjacent duplicates")]
-    
     public void should_return_number_of_duplicate_same_case_characters_for_repeating_character_string(string input, int expectedCount)
     {
-        var duplicates = _duplicatesCounter.CountDuplicates(input);
+        var duplicates = CountDuplicates(input);
+        DuplicatesCountShouldBe(duplicates, expectedCount);
         duplicates.Should().Be(expectedCount);
     }
 
@@ -36,11 +35,18 @@ public class DuplicatesCounterTests
     [TestCase("Indivisibilities", 2, TestName = "mixed case with non-adjacent duplicates")]
     public void should_return_number_of_duplicate_different_case_characters_for_repeating_character_string(string input, int expectedCount)
     {
-        var duplicates = _duplicatesCounter.CountDuplicates(input);
-        duplicates.Should().Be(expectedCount);
+        var duplicates = CountDuplicates(input);
+        DuplicatesCountShouldBe(duplicates, expectedCount);
     }
+
+    private void DuplicatesCountShouldBe(int duplicates, int expectedDuplicateCounts)
+    {
+        duplicates.Should().Be(expectedDuplicateCounts);
+    }
+
     private int CountDuplicates(string input)
     {
-        return _duplicatesCounter.CountDuplicates(input);
+        return _duplicatesCounter.CountDuplicatesByLinq(input);
+        // return _duplicatesCounter.CountDuplicatesByForEach(input);
     }
 }
