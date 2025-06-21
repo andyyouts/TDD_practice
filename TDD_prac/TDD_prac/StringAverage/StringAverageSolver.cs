@@ -2,9 +2,9 @@
 
 namespace TDD_prac.StringAverage;
 
-public class StringAverageSolver
+public static class StringAverageSolver
 {
-    private readonly Dictionary<string, int> _numberStringToInt = new()
+    private static readonly Dictionary<string, int> NumberStringToInt = new()
     {
         {"one", 1},
         {"two", 2},
@@ -17,7 +17,7 @@ public class StringAverageSolver
         {"nine", 9},
     };
 
-    public string GetStringAverage(string numbersAsWords)
+    public static string GetStringAverage(string numbersAsWords)
     {
         if (string.IsNullOrWhiteSpace(numbersAsWords))
         {
@@ -31,7 +31,7 @@ public class StringAverageSolver
             : "n/a";
     }
 
-    private bool TryParseAllNumbers(string[] wordNumbers, out int sum)
+    private static bool TryParseAllNumbers(string[] wordNumbers, out int sum)
     {
         sum = 0;
 
@@ -48,9 +48,9 @@ public class StringAverageSolver
         return true;
     }
 
-    private bool IsNumberValid(string wordNumber, out int value)
+    private static bool IsNumberValid(string wordNumber, out int value)
     {
-        return !_numberStringToInt.TryGetValue(wordNumber.ToLower(), out value);
+        return !NumberStringToInt.TryGetValue(wordNumber.ToLower(), out value);
     }
 
     private static string CalculateAverage(int sum, int count)
