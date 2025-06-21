@@ -1,10 +1,10 @@
 ﻿namespace TDD_prac.NextBiggerNumber;
 
-public class NextBiggerNumberSolver
+public static class NextBiggerNumberSolver
 {
     private const int CannotGenerateNextBiggerNumber = -1;
 
-    public int GetNextBiggerNumber(int integer)
+    public static int GetNextBiggerNumber(int integer)
     {
         if (TryConvertToValidString(integer, out var integerAsString))
         {
@@ -37,18 +37,38 @@ public class NextBiggerNumberSolver
 
     private static int GenerateNextBiggerNumber(string s, int firstDecreasingIndex, int nextLargerIndex)
     {
-        var charArray = s.ToCharArray();
-        (charArray[firstDecreasingIndex - 1], charArray[nextLargerIndex]) = (charArray[nextLargerIndex], charArray[firstDecreasingIndex - 1]);
+        var charArray = SwapAndSortCharacters(s, firstDecreasingIndex, nextLargerIndex);
+        var nextPart = GenerateSortedNextPart(firstDecreasingIndex, charArray);
+        var result = ConstructNextBiggerNumberString(firstDecreasingIndex, charArray, nextPart);
+
+        return NextBiggerNumber(result);
+    }
+
+    private static string ConstructNextBiggerNumberString(int firstDecreasingIndex, char[] charArray, List<char> nextPart)
+    {
+        var result = new string(charArray.Take(firstDecreasingIndex).ToArray()) + new string(nextPart.ToArray());
+        return result;
+    }
+
+    private static List<char> GenerateSortedNextPart(int firstDecreasingIndex, char[] charArray)
+    {
         var nextPart = charArray[firstDecreasingIndex..].ToList();
         nextPart.Sort();
-        var result = new string(charArray.Take(firstDecreasingIndex).ToArray()) + new string(nextPart.ToArray());
+        return nextPart;
+    }
 
-        if (int.TryParse(result, out var nextBiggerNumber))
-        {
-            return nextBiggerNumber;
-        }
+    private static char[] SwapAndSortCharacters(string s, int firstDecreasingIndex, int nextLargerIndex)
+    {
+        var charArray = s.ToCharArray();
+        (charArray[firstDecreasingIndex - 1], charArray[nextLargerIndex]) = (charArray[nextLargerIndex], charArray[firstDecreasingIndex - 1]);
+        return charArray;
+    }
 
-        return CannotGenerateNextBiggerNumber;
+    private static int NextBiggerNumber(string result)
+    {
+        return int.TryParse(result, out var nextBiggerNumber)
+            ? nextBiggerNumber
+            : CannotGenerateNextBiggerNumber;
     }
 
     private static int FindNextLargerIndex(string s, int i)
