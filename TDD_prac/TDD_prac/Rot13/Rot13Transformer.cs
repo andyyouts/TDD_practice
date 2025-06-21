@@ -34,7 +34,7 @@ public static class Rot13Transformer
 
     private static bool IsAlphabet(char c)
     {
-        return char.IsLetter(c);
+        return c is >= 'A' and <= 'Z' or >= 'a' and <= 'z';
     }
 
     private static char Rot13(char c)
